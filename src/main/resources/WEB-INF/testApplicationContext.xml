@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:annotation-config/>
+    <import resource="TestDataource_db.xml"/>
+    <context:component-scan base-package="pkutepov.com"/>
+
+
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <constructor-arg type="javax.sql.DataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="userDao" class="pkutepov.com.dao.user_dao.UserDaoImpl">
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+        <property name="userDao" ref="userDao"/>
+        <property name="userInfoDao" ref="userInfoDao"/>
+        <property name="roleDao" ref="roleDao"/>
+
+    </bean>
+
+    <!--<bean id="securityService" class="pkutepov.com.security.SecurityServiceImpl" >-->
+    <!--</bean>-->
+    <bean id="roleDao" class="pkutepov.com.dao.role.RoleDaoImpl" >
+    <property name="jdbcTemplate" ref="jdbcTemplate"/>
+    </bean>
+    <bean id="userService" class="pkutepov.com.dao.user_dao.UserServiceImpl" >
+        <property name="userDao" ref="userDao"/>
+        <property name="userInfoDao" ref="userInfoDao"/>
+    </bean>
+    <bean id="userInfoDao" class="pkutepov.com.dao.user_dao.UserInfoDaoImpl">
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+        <property name="userInfoDao" ref="userInfoDao"/>
+    </bean>
+
+    <bean id="addressDao" class="pkutepov.com.dao.address_dao.AddressDaoImpl">
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+        <property name="addressDao" ref="addressDao"/>
+        <property name="localityDao" ref="localityDao"/>
+
+    </bean>
+    <bean id="addressService" class="pkutepov.com.dao.address_dao.AddressServiceImpl">
+        <property name="addressDao" ref="addressDao"/>
+        <property name="localityDao" ref="localityDao"/>
+    </bean>
+
+    <bean id="localityDao" class="pkutepov.com.dao.address_dao.LocalityDaoImpl">
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+    </bean>
+
+    <bean id="employeeDao" class="pkutepov.com.dao.employer_dao.EmployeeDaoImpl">
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+        <property name="userService" ref="userService"/>
+        <property name="departamentDao" ref="departamentDao"/>
+    </bean>
+    <bean id="employeeService" class="pkutepov.com.dao.employer_dao.EmployeeServiceImpl">
+        <property name="employeeDao" ref="employeeDao"/>
+    </bean>
+    <bean id="medicineDao" class="pkutepov.com.dao.medicine_dao.MedicineDaoImpl">
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+    </bean>
+    <bean id="medicineService" class="pkutepov.com.dao.medicine_dao.MedicineServiceImpl">
+        <property name="medicineDao" ref="medicineDao"/>
+    </bean>
+    <bean id="orderDao" class="pkutepov.com.dao.order_dao.OrderDaoImpl">
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+        <property name="medicineService" ref="medicineService"/>
+        <property name="orderInfoDao" ref="orderInfoDao"/>
+    </bean>
+    <bean id="orderService" class="pkutepov.com.dao.order_dao.OrderServiceImpl">
+        <property name="orderDao" ref="orderDao"/>
+        <property name="orderInfoDao" ref="orderInfoDao"/>
+    </bean>
+    <bean id="departamentDao" class="pkutepov.com.dao.employer_dao.DepartamentDaoImpl">
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+    </bean>
+    <bean id="orderInfoDao" class="pkutepov.com.dao.order_dao.OrderInfoDaoImpl">
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+        <property name="userService" ref="userService"/>
+        <property name="employeeService" ref="employeeService"/>
+        <property name="addressService" ref="addressService"/>
+
+    </bean>
+
+
+</beans>
