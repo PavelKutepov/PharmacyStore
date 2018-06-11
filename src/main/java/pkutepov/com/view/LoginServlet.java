@@ -1,4 +1,4 @@
-package pkutepov.com;
+package pkutepov.com.view;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

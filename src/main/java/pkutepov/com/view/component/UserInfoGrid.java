@@ -9,13 +9,15 @@ import pkutepov.com.dao.user_dao.UserService;
 import java.util.List;
 
 public class UserInfoGrid extends CustomComponent {
-    List<UserInfo> userInfos ;
-    private Panel components=  new Panel();
+    private String caption = "Информация о пользователях";
+    private List<UserInfo> userInfos;
+    private Panel components = new Panel();
+
     public UserInfoGrid() {
         ApplicationContext context = ContextLoaderListener.getCurrentWebApplicationContext();
-        UserService userService = context.getBean("userService",UserService.class);
-        userInfos= userService.getAllUsersInfo();
-        Grid<UserInfo> grid =  new Grid<>();
+        UserService userService = context.getBean("userService", UserService.class);
+        userInfos = userService.getAllUsersInfo();
+        Grid<UserInfo> grid = new Grid<>();
         grid.setItems(userInfos);
         grid.addColumn(UserInfo::getFirstName).setCaption("Имя");
         grid.addColumn(UserInfo::getLastName).setCaption("Фамилия");
@@ -23,16 +25,21 @@ public class UserInfoGrid extends CustomComponent {
         grid.addColumn(UserInfo::getPhoneNumber).setCaption("Телефон");
         grid.setSizeFull();
 
-        HorizontalLayout horizontalLayout =  new HorizontalLayout();
+        HorizontalLayout horizontalLayout = new HorizontalLayout();
         horizontalLayout.addComponent(grid);
         horizontalLayout.setSizeFull();
 
-        VerticalLayout verticalLayout =  new VerticalLayout();
+        VerticalLayout verticalLayout = new VerticalLayout();
         verticalLayout.addComponent(horizontalLayout);
 
         components.setContent(verticalLayout);
         components.setSizeFull();
         setCompositionRoot(components);
         setSizeFull();
+    }
+
+    @Override
+    public String getCaption() {
+        return caption;
     }
 }

@@ -21,12 +21,13 @@ public class AddressDaoImpl extends NamedParameterJdbcDaoSupport implements Addr
 
     @Override
     @Transactional(readOnly = true)
-    public void addAddress(String street, int house, int apartment, Locality locality) {
+    public Address addAddress(Address address) {
+
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-        mapSqlParameterSource.addValue("street", street);
-        mapSqlParameterSource.addValue("house", house);
-        mapSqlParameterSource.addValue("apartment", apartment);
-        mapSqlParameterSource.addValue("locality_id", locality.getLocality_id());
+        mapSqlParameterSource.addValue("street", address.getStreet());
+        mapSqlParameterSource.addValue("house", address.getHouse());
+        mapSqlParameterSource.addValue("apartment", address.getApartment());
+        mapSqlParameterSource.addValue("locality_id", address.getLocality().getLocality_id());
         KeyHolder keyHolder = new GeneratedKeyHolder();
         StringBuilder sql = new StringBuilder();
         sql.append("INSERT INTO pharmacydatabase.address (street,house,apartment,locality_id)  ")
@@ -37,6 +38,8 @@ public class AddressDaoImpl extends NamedParameterJdbcDaoSupport implements Addr
                 .append("  :locality_id )");
 
         getNamedParameterJdbcTemplate().update(sql.toString(), mapSqlParameterSource, keyHolder);
+        address.setAddressId(keyHolder.getKey().intValue());
+        return address;
     }
 
     @Override
@@ -62,16 +65,16 @@ public class AddressDaoImpl extends NamedParameterJdbcDaoSupport implements Addr
 
     }
 
-    public void setAddressDao(AddressDao addressDao) {
-        this.addressDao = addressDao;
-    }
-
     public void setLocalityDao(LocalityDao localityDao) {
         this.localityDao = localityDao;
     }
 
     public AddressDao getAddressDao() {
         return addressDao;
+    }
+
+    public void setAddressDao(AddressDao addressDao) {
+        this.addressDao = addressDao;
     }
 
     private class AddressRowMapper implements RowMapper<Address> {

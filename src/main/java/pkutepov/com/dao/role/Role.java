@@ -7,7 +7,6 @@ public class Role {
     String name;
 
 
-
     public Role() {
 
     }
@@ -26,9 +25,6 @@ public class Role {
         return name;
     }
 
-    public void setName(String login) {
-        this.name = name;
-    }
 
     public int getRoleId() {
         return roleId;

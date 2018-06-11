@@ -34,24 +34,24 @@ public class UserInfoDaoImpl extends NamedParameterJdbcDaoSupport implements Use
 
     }
 
-    public void setUserInfoDao(UserInfoDao userInfoDao) {
-        this.userInfoDao = userInfoDao;
-    }
-
     public UserInfoDao getUserInfoDao() {
         return userInfoDao;
     }
 
+    public void setUserInfoDao(UserInfoDao userInfoDao) {
+        this.userInfoDao = userInfoDao;
+    }
+
     @Override
     @Transactional(readOnly = true)
-    public UserInfo addUserInfo(String lastname, String firstname, String patronymic, String phoneNumber) {
+    public UserInfo addUserInfo(UserInfo userInfo) {
         StringBuilder sql = new StringBuilder();
         KeyHolder keyHolder = new GeneratedKeyHolder();
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-        mapSqlParameterSource.addValue("lastname", lastname);
-        mapSqlParameterSource.addValue("firstname", firstname);
-        mapSqlParameterSource.addValue("patronymic", patronymic);
-        mapSqlParameterSource.addValue("phoneNumber", phoneNumber);
+        mapSqlParameterSource.addValue("lastname", userInfo.getLastName());
+        mapSqlParameterSource.addValue("firstname", userInfo.getFirstName());
+        mapSqlParameterSource.addValue("patronymic", userInfo.getPatronymic());
+        mapSqlParameterSource.addValue("phoneNumber", userInfo.getPhoneNumber());
         sql.append("INSERT INTO pharmacydatabase.user_info ( lastname,firstname,patronymic,phone_number)")
                 .append("VALUES( ")
                 .append(" :lastname, ")
@@ -60,7 +60,8 @@ public class UserInfoDaoImpl extends NamedParameterJdbcDaoSupport implements Use
                 .append(" :phoneNumber  )");
         getNamedParameterJdbcTemplate().update(sql.toString(), mapSqlParameterSource, keyHolder);
 
-        return new UserInfo(keyHolder.getKey().intValue(), lastname, firstname, patronymic, phoneNumber);
+        return new UserInfo(keyHolder.getKey().intValue(), userInfo.getLastName(),
+                userInfo.getFirstName(), userInfo.getPatronymic(), userInfo.getPhoneNumber());
     }
 
     private class UserInfoRowMapper implements RowMapper<UserInfo> {

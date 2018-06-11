@@ -2,9 +2,7 @@ package pkutepov.com.dao.order_dao;
 
 
 import pkutepov.com.dao.address_dao.Address;
-import pkutepov.com.dao.employer_dao.Employee;
 import pkutepov.com.dao.user_dao.UserInfo;
-
 
 import java.util.Date;
 
@@ -14,17 +12,21 @@ public class OrderInfo {
 
     private UserInfo userInfo;
 
-    private Employee employee;
-
     private Address address;
 
     private Date date;
 
 
-    public OrderInfo(int orderInfoId, UserInfo userInfo, Employee employee, Address address, Date date) {
+    public OrderInfo(int orderInfoId, UserInfo userInfo, Address address, Date date) {
         this.orderInfoId = orderInfoId;
         this.userInfo = userInfo;
-        this.employee = employee;
+
+        this.address = address;
+        this.date = date;
+    }
+
+    public OrderInfo(UserInfo userInfo, Address address, Date date) {
+        this.userInfo = userInfo;
         this.address = address;
         this.date = date;
     }
@@ -45,13 +47,6 @@ public class OrderInfo {
         this.userInfo = userInfo;
     }
 
-    public Employee getEmployee() {
-        return employee;
-    }
-
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
-    }
 
     public Address getAddress() {
         return address;

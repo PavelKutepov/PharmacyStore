@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import pkutepov.com.dao.medicine_dao.Medicine;
 import pkutepov.com.dao.medicine_dao.MedicineService;
 
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -30,6 +29,7 @@ public class OrderDaoImpl extends NamedParameterJdbcDaoSupport implements OrderD
         return getNamedParameterJdbcTemplate().query(sql.toString(), new OrderRowMapper());
     }
 
+
     @Override
     @Transactional(readOnly = true)
     public Order getOrderById(int orderId) {
@@ -40,11 +40,11 @@ public class OrderDaoImpl extends NamedParameterJdbcDaoSupport implements OrderD
 
     @Override
     @Transactional(readOnly = true)
-    public Order addOrder(Medicine medicine, OrderInfo orderInfo, int count) {
+    public Order addOrder(Order order) {
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-        mapSqlParameterSource.addValue("medicine_id", medicine.getMedicine_id());
-        mapSqlParameterSource.addValue("order_info_id", orderInfo.getOrderInfoId());
-        mapSqlParameterSource.addValue("count", count);
+        mapSqlParameterSource.addValue("medicine_id", order.getMedicine().getMedicine_id());
+        mapSqlParameterSource.addValue("order_info_id", order.getOrderInfo().getOrderInfoId());
+        mapSqlParameterSource.addValue("count", order.getCount());
         KeyHolder keyHolder = new GeneratedKeyHolder();
         StringBuilder sql = new StringBuilder();
         sql.append("INSERT INTO pharmacydatabase.order (medicine_id,order_info_id,count) ")
@@ -53,9 +53,10 @@ public class OrderDaoImpl extends NamedParameterJdbcDaoSupport implements OrderD
                 .append(" :order_info_id , ")
                 .append(" :count)");
         getNamedParameterJdbcTemplate().update(sql.toString(), mapSqlParameterSource, keyHolder);
-        Order order = new Order(keyHolder.getKey().intValue(), medicine, orderInfo, count);
-        return order;
+        Order ordeRes = new Order(keyHolder.getKey().intValue(), order.getMedicine(), order.getOrderInfo(), order.getCount());
+        return ordeRes;
     }
+
     @Transactional(readOnly = true)
     public List<Order> getOrderListByOrderInfoId(int orderInfoId) {
         StringBuilder sql = new StringBuilder();

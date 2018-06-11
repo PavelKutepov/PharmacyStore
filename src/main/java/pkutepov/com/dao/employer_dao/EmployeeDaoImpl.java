@@ -32,13 +32,13 @@ public class EmployeeDaoImpl extends NamedParameterJdbcDaoSupport implements Emp
     public void addEmployee(User user, Departament departament) {
         StringBuilder sql = new StringBuilder();
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-        mapSqlParameterSource.addValue("departament_id",departament.getDepartamentId());
-        mapSqlParameterSource.addValue("user_id",user.getUserId());
+        mapSqlParameterSource.addValue("departament_id", departament.getDepartamentId());
+        mapSqlParameterSource.addValue("user_id", user.getUserId());
         sql.append("INSERT INTO pharmacydatabase.employee (user_id, departament_id)  ")
                 .append("VALUES( ")
                 .append(" :user_id, ")
                 .append(" :departament_id )");
-        getNamedParameterJdbcTemplate().update(sql.toString(),mapSqlParameterSource);
+        getNamedParameterJdbcTemplate().update(sql.toString(), mapSqlParameterSource);
 
     }
 

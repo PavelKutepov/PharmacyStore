@@ -7,7 +7,7 @@ import java.util.List;
 @Service
 public interface AddressService {
 
-    void addAdress(String street, int house, int apartment, Locality locality);
+    Address addAdress(Address address);
 
     List<Address> getAllAddressList();
 

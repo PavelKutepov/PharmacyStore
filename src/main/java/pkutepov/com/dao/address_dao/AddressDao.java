@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface AddressDao {
 
-    void addAddress(String street, int house, int apartment, Locality locality);
+    Address addAddress(Address address);
 
     List<Address> getAllAddressList();
 

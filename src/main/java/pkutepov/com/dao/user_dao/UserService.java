@@ -24,5 +24,5 @@ public interface UserService {
 
     Set<User> getUserByRoleId(int roleId);
 
-    UserInfo addUserInfo(String lastName, String firstName, String patronymic, String phoneNumber);
+    UserInfo addUserInfo(UserInfo userInfo);
 }

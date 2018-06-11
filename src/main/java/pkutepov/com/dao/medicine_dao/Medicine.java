@@ -9,7 +9,6 @@ public class Medicine {
     private double price;
 
 
-
     public Medicine(int medicine_id, String name, String firm, String type, int price) {
         this.medicine_id = medicine_id;
         this.name = name;
@@ -69,10 +68,9 @@ public class Medicine {
     }
 
 
-
     @Override
     public String toString() {
-        return "Medicine" + name  + firm + type + price ;
+        return "Medicine" + name + firm + type + price;
     }
 
 

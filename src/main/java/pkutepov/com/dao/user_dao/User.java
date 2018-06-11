@@ -11,9 +11,9 @@ public class User {
     private final String login;
 
     private final String password;
-    @Transient
-    private  String confirmPassword;
     private final UserInfo userInfo;
+    @Transient
+    private String confirmPassword;
     private Set<Role> roles;
 
     public User(int userId, String login, String password, UserInfo userInfo) {
@@ -22,6 +22,7 @@ public class User {
         this.password = password;
         this.userInfo = userInfo;
     }
+
 
     public User(int userId, String login, String password, UserInfo userInfo, Set<Role> roles) {
         this.userId = userId;
@@ -39,6 +40,16 @@ public class User {
         this.roles = roles;
     }
 
+    public String getRolesToString() {
+        StringBuilder sb = new StringBuilder();
+        String sep = "";
+        for (Role role : roles) {
+            sb.append(sep).append(role.getName());
+            sep = ", ";
+        }
+        return sb.toString();
+    }
+
     public String getLogin() {
         return login;
     }
@@ -54,6 +65,7 @@ public class User {
     public int getUserId() {
         return userId;
     }
+
     public String getConfirmPassword() {
         return confirmPassword;
     }

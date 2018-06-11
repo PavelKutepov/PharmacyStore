@@ -43,6 +43,11 @@ body {
     margin-top: 10px;
 }
 
+.container1 {
+    position: center;
+    margin-top:400px;
+    margin-right: 400px;
+    }
 .has-error {
     color: red
 }

@@ -1,8 +1,5 @@
 package pkutepov.com.dao.order_dao;
 
-import pkutepov.com.dao.medicine_dao.Medicine;
-
-
 import java.util.List;
 
 public interface OrderDao {
@@ -13,5 +10,5 @@ public interface OrderDao {
 
     Order getOrderById(int orderId);
 
-    Order addOrder(Medicine medicine, OrderInfo orderInfo, int count);
+    Order addOrder(Order order);
 }

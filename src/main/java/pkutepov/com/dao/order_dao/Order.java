@@ -26,6 +26,11 @@ public class Order {
         this.count = count;
     }
 
+    public Order(Medicine medicine, int count) {
+        this.medicine = medicine;
+        this.count = count;
+    }
+
     public int getOrderId() {
         return orderId;
     }

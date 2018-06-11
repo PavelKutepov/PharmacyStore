@@ -9,6 +9,7 @@
 
     <context:annotation-config/>
     <import resource="dataource_db.xml"/>
+    <import resource="security.xml"/>
     <context:component-scan base-package="pkutepov.com"/>
 
 
@@ -75,6 +76,7 @@
     <bean id="orderService" class="pkutepov.com.dao.order_dao.OrderServiceImpl">
         <property name="orderDao" ref="orderDao"/>
         <property name="orderInfoDao" ref="orderInfoDao"/>
+        <property name="addressService" ref="addressService"/>
     </bean>
     <bean id="departamentDao" class="pkutepov.com.dao.employer_dao.DepartamentDaoImpl">
         <property name="jdbcTemplate" ref="jdbcTemplate"/>

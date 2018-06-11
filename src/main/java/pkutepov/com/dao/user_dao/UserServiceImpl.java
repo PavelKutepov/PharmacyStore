@@ -3,7 +3,6 @@ package pkutepov.com.dao.user_dao;
 
 import pkutepov.com.dao.role.Role;
 
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -17,25 +16,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User addUser(String login, String password, UserInfo userInfo) {
-        return userDao.addUser(login, password, userInfo);
+        UserInfo newUserInfo = userInfoDao.addUserInfo(userInfo);
+        return userDao.addUser(login, password, newUserInfo);
+
+
     }
 
     @Override
-    public UserInfo addUserInfo(String lastName, String firstName, String patronymic, String phoneNumber) {
-        return userInfoDao.addUserInfo(lastName, firstName, patronymic, phoneNumber);
+    public UserInfo addUserInfo(UserInfo userInfo) {
+        return userInfoDao.addUserInfo(userInfo);
     }
 
     @Override
     public Set<User> getUserByRoleId(int roleId) {
         Set<User> userSet = new HashSet<>();
-       List<User> users= userDao.getAllUsers();
-       for(User user:users){
-           for(Role role:user.getRoles()){
-               if(role.getRoleId()==roleId){
-                   userSet.add(user);
-               }
-           }
-       }
+        List<User> users = userDao.getAllUsers();
+        for (User user : users) {
+            for (Role role : user.getRoles()) {
+                if (role.getRoleId() == roleId) {
+                    userSet.add(user);
+                }
+            }
+        }
         return userSet;
     }
 
@@ -45,7 +47,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByLogin(String login) {
-        return  userDao.getUserByLogin(login);
+        return userDao.getUserByLogin(login);
     }
 
     @Override

@@ -26,36 +26,36 @@ public class Address {
         this.locality = locality;
     }
 
-    public void setLocality(Locality locality) {
-        this.locality = locality;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public void setHouse(int house) {
-        this.house = house;
-    }
-
-    public void setApartment(int apartment) {
-        this.apartment = apartment;
-    }
-
     public Locality getLocality() {
         return locality;
+    }
+
+    public void setLocality(Locality locality) {
+        this.locality = locality;
     }
 
     public String getStreet() {
         return street;
     }
 
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
     public int getHouse() {
         return house;
     }
 
+    public void setHouse(int house) {
+        this.house = house;
+    }
+
     public int getApartment() {
         return apartment;
+    }
+
+    public void setApartment(int apartment) {
+        this.apartment = apartment;
     }
 
     public int getAddressId() {
@@ -64,5 +64,11 @@ public class Address {
 
     public void setAddressId(int addressId) {
         this.addressId = addressId;
+    }
+
+    @Override
+    public String toString() {
+        return "ул." + street + " д." + house + "кв." + apartment + locality;
+
     }
 }

@@ -10,7 +10,7 @@ public interface UserInfoDao {
 
     UserInfo getUserInfoById(int userId);
 
-    UserInfo addUserInfo(String lastName, String firstName, String patronymic, String phoneNumber);
+    UserInfo addUserInfo(UserInfo userInfo);
 
 }
 

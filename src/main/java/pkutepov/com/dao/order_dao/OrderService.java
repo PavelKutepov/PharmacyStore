@@ -1,13 +1,7 @@
 package pkutepov.com.dao.order_dao;
 
 import org.springframework.stereotype.Service;
-import pkutepov.com.dao.address_dao.Address;
-import pkutepov.com.dao.employer_dao.Employee;
-import pkutepov.com.dao.medicine_dao.Medicine;
-import pkutepov.com.dao.user_dao.UserInfo;
 
-
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -18,11 +12,15 @@ public interface OrderService {
 
     Order getOrderById(int orderId);
 
-    OrderInfo addOrderInfo(UserInfo userInfo, Employee employee, Address address, Date date);
+    OrderInfo addOrderInfo(OrderInfo orderInfo);
 
-    Order addOrder(Medicine medicine, OrderInfo orderInfo, int count);
+    Order addOrder(Order order);
+
+    List<OrderInfo> getOrderInfoByUserId(int userId);
 
     OrderInfo getOrderInfoById(int orderInfoId);
+
+    void addOrderList(List<Order> orders, OrderInfo orderInfo);
 
     List<OrderInfo> getAllOrderInfo();
 }

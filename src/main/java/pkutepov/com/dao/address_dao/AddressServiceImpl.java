@@ -9,8 +9,10 @@ public class AddressServiceImpl implements AddressService {
 
 
     @Override
-    public void addAdress(String street, int house, int apartment, Locality locality) {
-        addressDao.addAddress(street, house, apartment, locality);
+    public Address addAdress(Address address) {
+        localityDao.addLocality(address.getLocality());
+
+        return addressDao.addAddress(address);
     }
 
     @Override
@@ -28,19 +30,19 @@ public class AddressServiceImpl implements AddressService {
         return addressDao.getAddressForId(addressId);
     }
 
-    public void setAddressDao(AddressDao addressDao) {
-        this.addressDao = addressDao;
-    }
-
     public AddressDao getAddressDao() {
         return addressDao;
     }
 
-    public void setLocalityDao(LocalityDao localityDao) {
-        this.localityDao = localityDao;
+    public void setAddressDao(AddressDao addressDao) {
+        this.addressDao = addressDao;
     }
 
     public LocalityDao getLocalityDao() {
         return localityDao;
+    }
+
+    public void setLocalityDao(LocalityDao localityDao) {
+        this.localityDao = localityDao;
     }
 }

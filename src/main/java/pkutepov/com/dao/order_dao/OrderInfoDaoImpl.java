@@ -9,15 +9,12 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import pkutepov.com.dao.address_dao.Address;
 import pkutepov.com.dao.address_dao.AddressService;
-import pkutepov.com.dao.employer_dao.Employee;
 import pkutepov.com.dao.employer_dao.EmployeeService;
 import pkutepov.com.dao.user_dao.UserInfo;
 import pkutepov.com.dao.user_dao.UserService;
 
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.List;
 
 @Transactional(isolation = Isolation.READ_COMMITTED)
@@ -58,22 +55,28 @@ public class OrderInfoDaoImpl extends NamedParameterJdbcDaoSupport implements Or
 
     @Override
     @Transactional(readOnly = true)
-    public OrderInfo addOrderInfo(UserInfo userInfo, Employee employee, Address address, Date date) {
+    public List<OrderInfo> getOrderInfoByUserId(int userId) {
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT * FROM pharmacydatabase.order_info WHERE user_info_id = ").append(userId);
+        return getJdbcTemplate().query(sql.toString(), new OrderInfoRowMapper());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public OrderInfo addOrderInfo(OrderInfo orderInfo) {
         StringBuilder sql = new StringBuilder();
         KeyHolder keyHolder = new GeneratedKeyHolder();
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-        mapSqlParameterSource.addValue("user_info_id", userInfo.getUserInfoId());
-        mapSqlParameterSource.addValue("employee_id", employee.getEmployeeId());
-        mapSqlParameterSource.addValue("address_id", address.getAddressId());
-        mapSqlParameterSource.addValue("date", date);
-        sql.append("INSERT INTO pharmacydatabase.order_info ( user_info_id, employee_id, address_id, date)")
+        mapSqlParameterSource.addValue("user_info_id", orderInfo.getUserInfo().getUserInfoId());
+        mapSqlParameterSource.addValue("address_id", orderInfo.getAddress().getAddressId());
+        mapSqlParameterSource.addValue("date", orderInfo.getDate());
+        sql.append("INSERT INTO pharmacydatabase.order_info ( user_info_id, address_id, date)")
                 .append("VALUES( ")
                 .append(" :user_info_id, ")
-                .append(" :employee_id, ")
                 .append(" :address_id, ")
                 .append(" :date )");
         getNamedParameterJdbcTemplate().update(sql.toString(), mapSqlParameterSource, keyHolder);
-        OrderInfo resultOrder = new OrderInfo(keyHolder.getKey().intValue(), userInfo, employee, address, date);
+        OrderInfo resultOrder = new OrderInfo(keyHolder.getKey().intValue(), orderInfo.getUserInfo(), orderInfo.getAddress(), orderInfo.getDate());
         return resultOrder;
     }
 
@@ -83,12 +86,10 @@ public class OrderInfoDaoImpl extends NamedParameterJdbcDaoSupport implements Or
         @Override
         public OrderInfo mapRow(ResultSet rs, int rowNum) throws SQLException {
             int userInfoId = rs.getInt("user_info_id");
-            int employeeId = rs.getInt("employee_id");
             int addressId = rs.getInt("address_id");
             UserInfo userInfo = userService.getUserInfoById(userInfoId);
-            Employee employee = employeeService.getEmployeeById(employeeId);
             Address address = addressService.getAddressForId(addressId);
-            return new OrderInfo(rs.getInt("order_info_id"), userInfo, employee, address, rs.getDate("date"));
+            return new OrderInfo(rs.getInt("order_info_id"), userInfo, address, rs.getDate("date"));
 
         }
     }

@@ -19,10 +19,10 @@ public class MedicineDaoImpl extends NamedParameterJdbcDaoSupport implements Med
     public void addMedicine(String name, String firm, String type, double price) {
         StringBuilder sql = new StringBuilder();
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-        mapSqlParameterSource.addValue("name",name);
-        mapSqlParameterSource.addValue("firm",firm);
-        mapSqlParameterSource.addValue("type",type);
-        mapSqlParameterSource.addValue("price",price);
+        mapSqlParameterSource.addValue("name", name);
+        mapSqlParameterSource.addValue("firm", firm);
+        mapSqlParameterSource.addValue("type", type);
+        mapSqlParameterSource.addValue("price", price);
 
         sql.append("INSERT INTO pharmacydatabase.medicine (name,firm,type,price) ")
                 .append("VALUES( ")
@@ -31,7 +31,7 @@ public class MedicineDaoImpl extends NamedParameterJdbcDaoSupport implements Med
                 .append(" :type, ")
                 .append(" :price )");
 
-        getNamedParameterJdbcTemplate().update(sql.toString(),mapSqlParameterSource);
+        getNamedParameterJdbcTemplate().update(sql.toString(), mapSqlParameterSource);
     }
 
     @Override

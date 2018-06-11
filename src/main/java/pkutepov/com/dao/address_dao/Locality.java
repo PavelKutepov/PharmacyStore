@@ -60,4 +60,9 @@ public class Locality {
 
         return Objects.hash(city, district, local);
     }
+
+    @Override
+    public String toString() {
+        return "г. " + city + " " + district + " " + local;
+    }
 }

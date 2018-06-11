@@ -7,14 +7,12 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import pkutepov.com.dao.user_dao.User;
 
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
 @Transactional(isolation = Isolation.READ_COMMITTED)
 public class RoleDaoImpl extends NamedParameterJdbcDaoSupport implements RoleDao {
-
 
 
     @Override
@@ -30,7 +28,7 @@ public class RoleDaoImpl extends NamedParameterJdbcDaoSupport implements RoleDao
     public String getRoleNameById(int roleId) {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT * FROM pharmacydatabase.roles WHERE id =").append(roleId);
-        return getJdbcTemplate().query(sql.toString(),Object::toString);
+        return getJdbcTemplate().query(sql.toString(), Object::toString);
 
     }
 //    @Override
@@ -49,19 +47,32 @@ public class RoleDaoImpl extends NamedParameterJdbcDaoSupport implements RoleDao
         mapSqlParameterSource.addValue("user_id", user.getUserId());
         mapSqlParameterSource.addValue("role_id", role.getRoleId());
         sql.append("INSERT INTO pharmacydatabase.role_users (user_id,role_id) VALUES( ")
-                .append(" :user_id, " )
-                .append(" :role_id " )
-                .append(    " )");
+                .append(" :user_id, ")
+                .append(" :role_id ")
+                .append(" )");
         getNamedParameterJdbcTemplate().update(sql.toString(), mapSqlParameterSource);
     }
 
 
     @Override
     @Transactional(readOnly = true)
-    public Role getRoleById(int roleId){
+    public Role getRoleById(int roleId) {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT * FROM pharmacydatabase.roles WHERE role_id=").append(roleId);
         return getJdbcTemplate().queryForObject(sql.toString(), new RoleRowMapper());
+    }
+
+    @Override
+    public void removeRoleInUser(User user, Role role) {
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+        mapSqlParameterSource.addValue("user_id", user.getUserId());
+        mapSqlParameterSource.addValue("role_id", role.getRoleId());
+        StringBuilder sql = new StringBuilder();
+        sql.append("DELETE FROM pharmacydatabase.role_users WHERE ")
+                .append(" user_id= :user_id AND ")
+                .append(" role_id= :role_id ");
+
+        getNamedParameterJdbcTemplate().update(sql.toString(), mapSqlParameterSource);
     }
 
     private class RoleRowMapper implements RowMapper<Role> {
@@ -69,9 +80,9 @@ public class RoleDaoImpl extends NamedParameterJdbcDaoSupport implements RoleDao
 
         @Override
         public Role mapRow(ResultSet rs, int rowNum) throws SQLException {
-            int roleId=rs.getInt("role_id");
-           String name= rs.getString("name_role");
-            return new Role(roleId,name);
+            int roleId = rs.getInt("role_id");
+            String name = rs.getString("name_role");
+            return new Role(roleId, name);
 
         }
     }
